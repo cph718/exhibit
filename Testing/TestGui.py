@@ -13,7 +13,7 @@ def exitProgram():
 
 doButton=tk.Button(win, text = 'snack', font=myFont, command=doNothing, bg='bisque2', height=1, width=24)
 doButton.grid(row=0, sticky=tk.NSEW)
-exitButton=tk.Button(win, text = 'EXIT', font=myFont, command=exitProgram, bg='cyan', height=1, width=6)
-exitButton.grid(row=0, sticky=tk.NSEW)
+#exitButton=tk.Button(win, text = 'EXIT', font=myFont, command=exitProgram, bg='cyan', height=1, width=6)
+#exitButton.grid(row=0, sticky=tk.NSEW)
 
 tk.mainloop()
