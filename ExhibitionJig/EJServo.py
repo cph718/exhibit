@@ -12,8 +12,7 @@ def StartServo():
     EJServoComms.EnableServo()
     EJServoComms.Jog()
 
-    time.sleep(5)
-
+def StopServo():  
     EJServoComms.EStop()
     EJServoComms.DisableServo()
     EJServoComms.CloseComms()
