@@ -11,7 +11,7 @@ from pymodbus import (
 )
 
 def run_sync_simple_client():
-    client = ModbusClient.ModbusSerialClient(port='/dev/ttyUSB0', framer=Framer.ASCII, baudrate=19200, bytesize=7, parity="N", stopbits=2)
+    client = ModbusClient.ModbusSerialClient(port='/dev/ttyUSB0', framer=Framer.RTU, baudrate=19200, bytesize=8, parity="N", stopbits=1)
 
     print("connect to server")
     client.connect()
