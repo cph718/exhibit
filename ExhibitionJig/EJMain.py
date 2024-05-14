@@ -7,5 +7,6 @@ import EJGUI
 import EJServo
 
 if __name__ == "__main__":
+    EJServo.InitServo()
     EJGUI.StartGUI()
     #EJServo.StartServo()

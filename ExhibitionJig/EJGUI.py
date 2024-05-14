@@ -15,14 +15,28 @@ class pressMode(Enum):
 win = None
 currPressMode = pressMode.normalMode
 
-def StartMotor():
-    EJServo.StartServo()
-
 def StopMotor():
     EJServo.StopServo()
 
+def ReleaseMotor(event):
+    EJServo.StopServo()
+
+def ResetWarning():
+    EJServo.StopServo()
+
+def MoveUp(event):
+    #if Homing
+    EJServo.HomingUpServo()
+    #else move up to top limit switch
+
+def MoveDown(event):
+    #if Homing
+    EJServo.HomingDownServo()
+    #else move up to top limit switch
+
 def Exit():
-    win.quit()
+    EJServo.DeinitServo()
+    #win.quit() #doesn't close window, need to figure it out
 
 def StartGUI():
     global win
@@ -35,11 +49,16 @@ def StartGUI():
     operationLabel=tk.Label(master=operationFrame, text="Operating Mode")
     operationLabel.pack()
 
-    normalModeButton=tk.Button(master=operationFrame, text = 'Normal Mode', font=myFont, command=StartMotor, bg='bisque2', height=2, width=16)
+    normalModeButton=tk.Button(master=operationFrame, text = 'Normal Mode', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
+    normalModeButton["state"] = "disabled"
     normalModeButton.pack()
 
-    enduranceModeButton=tk.Button(master=operationFrame, text = 'Endurance Mode', font=myFont, command=StartMotor, bg='bisque2', height=2, width=16)
+    enduranceModeButton=tk.Button(master=operationFrame, text = 'Endurance Mode', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
+    enduranceModeButton["state"] = "disabled"
     enduranceModeButton.pack()
+
+    exitButton=tk.Button(master=operationFrame, text = 'Exit', font=myFont, command=Exit, bg='bisque2', height=2, width=16)
+    exitButton.pack()
 
 
     pressControlFrame=tk.Frame(master=win, relief=tk.GROOVE, borderwidth=5)
@@ -47,16 +66,20 @@ def StartGUI():
     pressControlLabel=tk.Label(master=pressControlFrame, text="Press Control")
     pressControlLabel.pack()
 
-    moveUpButton=tk.Button(master=pressControlFrame, text = 'Move Up', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
+    moveUpButton=tk.Button(master=pressControlFrame, text = 'Move Up', font=myFont, bg='bisque2', height=2, width=16)
     moveUpButton.pack()
+    moveUpButton.bind('<ButtonPress>', MoveUp)
+    moveUpButton.bind('<ButtonRelease>', ReleaseMotor)
 
-    moveDownButton=tk.Button(master=pressControlFrame, text = 'Move Down', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
+    moveDownButton=tk.Button(master=pressControlFrame, text = 'Move Down', font=myFont, bg='bisque2', height=2, width=16)
     moveDownButton.pack()
+    moveDownButton.bind('<ButtonPress>', MoveDown)
+    moveDownButton.bind('<ButtonRelease>', ReleaseMotor)
 
     moveDownButton=tk.Button(master=pressControlFrame, text = 'E-Stop', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
     moveDownButton.pack()
 
-    moveDownButton=tk.Button(master=pressControlFrame, text = 'Reset Warning', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
+    moveDownButton=tk.Button(master=pressControlFrame, text = 'Reset Warning', font=myFont, command=ResetWarning, bg='bisque2', height=2, width=16)
     moveDownButton.pack()
 
 
@@ -65,16 +88,20 @@ def StartGUI():
     utilityLabel=tk.Label(master=utilityFrame, text="Utilities")
     utilityLabel.pack()
 
-    moveUpButton=tk.Button(master=utilityFrame, text = 'Home Bracket', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
-    moveUpButton.pack()
+    bracketHomeButton=tk.Button(master=utilityFrame, text = 'Home Bracket', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
+    bracketHomeButton["state"] = "disabled"
+    bracketHomeButton.pack()
 
-    moveUpButton=tk.Button(master=utilityFrame, text = 'Bracket Up', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
-    moveUpButton.pack()
+    bracketUpButton=tk.Button(master=utilityFrame, text = 'Bracket Up', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
+    bracketUpButton["state"] = "disabled"
+    bracketUpButton.pack()
 
-    moveUpButton=tk.Button(master=utilityFrame, text = 'Bracket Down', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
-    moveUpButton.pack()
+    bracketDownButton=tk.Button(master=utilityFrame, text = 'Bracket Down', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
+    bracketDownButton["state"] = "disabled"
+    bracketDownButton.pack()
 
-    moveUpButton=tk.Button(master=utilityFrame, text = 'Tooltip Hunt', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
-    moveUpButton.pack()
+    bracketTTButton=tk.Button(master=utilityFrame, text = 'Tooltip Hunt', font=myFont, command=StopMotor, bg='bisque2', height=2, width=16)
+    bracketTTButton["state"] = "disabled"
+    bracketTTButton.pack()
 
     tk.mainloop()

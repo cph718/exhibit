@@ -19,7 +19,8 @@ print(ser.name)
 #packet.append(0xFE)
 #print(packet)
 
-command = b'\x01\x000000\x000000\x000000\x00\xfe'
+#command = b'\x01\x000000\x000000\x000000\x00\xfe'
+command = b'\x02\xfd'
 print(command)
 
 ser.write(command)

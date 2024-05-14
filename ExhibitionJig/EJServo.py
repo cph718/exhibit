@@ -6,16 +6,31 @@ __version__ = "0.0.1"
 import EJServoComms
 import time
 
-def StartServo():
+def InitServo():
     EJServoComms.InitComms()
     EJServoComms.SetPRMode()
     EJServoComms.EnableServo()
-    EJServoComms.Jog()
 
-def StopServo():  
+def DeinitServo():
     EJServoComms.EStop()
     EJServoComms.DisableServo()
     EJServoComms.CloseComms()
 
+def StopServo(): 
+    EJServoComms.EStop() 
 
+#Homing > Software does a double step homing process for accuracy
+def HomingUpServo():  
+    EJServoComms.HomingUp()
+
+def HomingDownServo():  
+    EJServoComms.HomingDown()
+
+def TestServoJog():  
+    EJServoComms.Jog()
+
+
+
+
+#TODO see page 91 for polling position
     
