@@ -45,10 +45,20 @@ def CloseComms():
 
 def SetPRMode():
     clientServo.write_register(0x0003, 0x0, slave=1) # Set to PR Mode
-    clientServo.write_register(0x0407, 0x27, slave=1) # Homing switch input setup
+
+    #Configure Inputs
+    clientServo.write_register(0x0407, 0x27, slave=1) # Homing switch CN1-Pin7-DI4
+    #Hardware limit switch positive default state CN1-Pin8-DI5
+    #Hardware limit switch negative default state CN1-Pin9-DI6
+
     #TODO Set software limits, they are enabled once homed
     #clientServo.write_register(0x6006, 0x0, slave=1) Positive SW Limit H
     print("PR Mode")
+
+def ReadServoState():
+    ServoState = clientServo.read_holding_registers(0x0b05, 2, slave=1)
+    print("Servo state", ServoState.registers[0])
+    return ServoState
 
 def EnableServo():
     clientServo.write_register(0x0405, 0x83, slave=1) # Enable Servo Motor
@@ -62,11 +72,6 @@ def EStop():
     clientServo.write_register(0x6002, 0x0040, slave=1) # E-Stop
     print("E-Stop")
 
-#def ManualUpHoming():
-#    packetData = [0x0002, 0x0000, 0x0000, 0x03e8, 0x0062, 0x0060, 0x0000, 0x0010]
-#    clientServo.write_registers(0x6200, packetData, slave=1)
-#    print("Looking for Reference, Moving Up")
-
 def HomingUp():
     clientServo.write_register(0x600a, 0x04, slave=1) # Homing Configuration
     clientServo.write_register(0x6002, 0x0020, slave=1) # Homing
@@ -77,15 +82,15 @@ def HomingDown():
     clientServo.write_register(0x6002, 0x0020, slave=1) # Homing
     print("Homing Down")
 
-#def SetHome():
-    #clientServo.write_register(0x600a, 0x01, slave=1) # Homing
-    #print("Homing Down")
+def NormalUp():
+    packetData = [0x0002, 0x0000, 0x0000, 0xfc18, 0x0062, 0x0060, 0x0000, 0x0010]
+    clientServo.write_registers(0x6200, packetData, slave=1)
+    print("Normal Up")
 
-
-    #Test Jog Mode
-def Jog():
+def NormalDown():
     packetData = [0x0002, 0x0000, 0x0000, 0x03e8, 0x0062, 0x0060, 0x0000, 0x0010]
     clientServo.write_registers(0x6200, packetData, slave=1)
+    print("Normal Down")
 
 
 

@@ -6,14 +6,8 @@ __version__ = "0.0.1"
 import tkinter as tk
 import tkinter.font
 import EJServo
-from enum import Enum
-
-class pressMode(Enum):
-    normalMode = 1
-    enduranceMode = 2
 
 win = None
-currPressMode = pressMode.normalMode
 
 def StopMotor():
     EJServo.StopServo()
@@ -26,12 +20,12 @@ def ResetWarning():
 
 def MoveUp(event):
     #if Homing
-    EJServo.HomingUpServo()
+    EJServo.MoveUp()
     #else move up to top limit switch
 
 def MoveDown(event):
     #if Homing
-    EJServo.HomingDownServo()
+    EJServo.MoveDown()
     #else move up to top limit switch
 
 def Exit():
