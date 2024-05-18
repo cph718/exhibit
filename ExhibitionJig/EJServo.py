@@ -16,6 +16,7 @@ currPressMode = pressMode.notReferenced
 def InitServo():
     EJServoComms.InitComms()
     EJServoComms.SetPRMode()
+    EJServoComms.SetPaths()
     EJServoComms.EnableServo()
 
 def DeinitServo():
@@ -35,6 +36,8 @@ def CheckServoStatus():
     if((status.registers[0]&0x08)):
         currPressMode = pressMode.referenced
         print('referenced')
+    
+    
 
 def MoveUp():
     global currPressMode

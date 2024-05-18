@@ -82,15 +82,61 @@ def HomingDown():
     clientServo.write_register(0x6002, 0x0020, slave=1) # Homing
     print("Homing Down")
 
-def NormalUp():
+def NormalVelocityUp():
     packetData = [0x0002, 0x0000, 0x0000, 0xfc18, 0x0062, 0x0060, 0x0000, 0x0010]
     clientServo.write_registers(0x6200, packetData, slave=1)
-    print("Normal Up")
+    print("Normal Velocity Up")
 
-def NormalDown():
+def NormalVelocityDown():
     packetData = [0x0002, 0x0000, 0x0000, 0x03e8, 0x0062, 0x0060, 0x0000, 0x0010]
     clientServo.write_registers(0x6200, packetData, slave=1)
+    print("Normal Velocity Down")
+
+def NormalUp(): #Call path2
+    clientServo.write_register(0x6002, 0x0012, slave=1) #Run Path2
+    print("Normal Up")
+
+def NormalDown(): #Call path3
+    clientServo.write_register(0x6002, 0x0013, slave=1) #Run Path3
     print("Normal Down")
 
+#Configure paths 3 to 6
+#Path 2(6210) = Move up to Limit
+#Path 3(6218) = Move down to material height
+#Path 4(6220) = Move down to bend depth (BDC) with pause
+#Path 5(6228) = Move up to material height
+#Path 6(6230) = Move up to TDC
 
+#Path 2 
+#6210 = Path2 Mode          Bit0-3 MODE 0=Disabled, 1=Position, 2=Velocity, 3=Homing, 4=Stop| Bit4 INS 0=No interrupt, 1=Interrupt
+#                           Bit5 OVLP 0=No Overlap, 1=Overlap| Bit6-7 0=Absolute position, 1=Relative to command, 2=Relative to motor,
+#                           Bit8-13 0-15 Jump to corresponding path| Bit5 JUMP 0=No Jump, 1=Jump
+#6211 = Path2 Position High
+#6212 = Path2 Position Low
+#6213 = Path2 Speed         Speed in RPM
+#6214 = Path 2 Acceleration Acceleration in ms/1000rpm
+#6215 = Path 2 Deceleration Deceleration in ms/1000rpm
+#6216 = Path 2 Pause Time   Time to pause between Paths in ms
+#6217 = Special Parameters  
 
+def SetPaths():
+    packetData = [0x0002, 0x0000, 0x0000, 0xff38, 0x0062, 0x0062, 0x0000, 0x0000] #velocity mode
+    clientServo.write_registers(0x6210, packetData, slave=1) #Set Path 2
+    print("Path 2 Configured")
+
+    packetData = [0x8421, 0x0000, 0xe0c0, 0xffc8, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Overlap, Absolute position, Jump to 4, Jump (-8000)
+    clientServo.write_registers(0x6218, packetData, slave=1) #Set Path 3
+    print("Path 3 Configured")
+
+    packetData = [0x8501, 0xffff, 0xdcd8, 0x0032, 0x0062, 0x0062, 0x01f4, 0x0000] #Position Mode, Absolute position, Jump to 5, Pause 0.5s, Jump (-9000)
+    clientServo.write_registers(0x6218, packetData, slave=1) #Set Path 4
+    print("Path 4 Configured")
+
+    packetData = [0x8621, 0xffff, 0xe0c0, 0x0032, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Overlap, Absolute position, Jump to 6, Jump (-8000)
+    clientServo.write_registers(0x6218, packetData, slave=1) #Set Path 5
+    print("Path 5 Configured")
+
+#TODO need to make this uninteruptible
+    packetData = [0x0001, 0x0000, 0x0000, 0x01f4, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Absolute position
+    clientServo.write_registers(0x6218, packetData, slave=1) #Set Path 5
+    print("Path 6 Configured")
