@@ -1,5 +1,6 @@
 # EJServoComms.py
 # 11/05/2024
+# Commission motors before operation with Motion Studio
 __author__ = "CHaynes"
 __version__ = "0.0.1"
 
@@ -73,12 +74,12 @@ def EStop():
     print("E-Stop")
 
 def HomingUp():
-    clientServo.write_register(0x600a, 0x04, slave=1) # Homing Configuration
+    clientServo.write_register(0x600a, 0x05, slave=1) # Homing Configuration
     clientServo.write_register(0x6002, 0x0020, slave=1) # Homing
     print("Homing Up")
 
 def HomingDown():
-    clientServo.write_register(0x600a, 0x05, slave=1) # Homing
+    clientServo.write_register(0x600a, 0x04, slave=1) # Homing
     clientServo.write_register(0x6002, 0x0020, slave=1) # Homing
     print("Homing Down")
 
@@ -124,19 +125,19 @@ def SetPaths():
     clientServo.write_registers(0x6210, packetData, slave=1) #Set Path 2
     print("Path 2 Configured")
 
-    packetData = [0x8421, 0x0000, 0xe0c0, 0xffc8, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Overlap, Absolute position, Jump to 4, Jump (-8000)
+    packetData = [0x8421, 0xffff, 0xe0c0, 0xffc8, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Overlap, Absolute position, Jump to 4, Jump (-8000)
     clientServo.write_registers(0x6218, packetData, slave=1) #Set Path 3
     print("Path 3 Configured")
 
     packetData = [0x8501, 0xffff, 0xdcd8, 0x0032, 0x0062, 0x0062, 0x01f4, 0x0000] #Position Mode, Absolute position, Jump to 5, Pause 0.5s, Jump (-9000)
-    clientServo.write_registers(0x6218, packetData, slave=1) #Set Path 4
+    clientServo.write_registers(0x6220, packetData, slave=1) #Set Path 4
     print("Path 4 Configured")
 
     packetData = [0x8621, 0xffff, 0xe0c0, 0x0032, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Overlap, Absolute position, Jump to 6, Jump (-8000)
-    clientServo.write_registers(0x6218, packetData, slave=1) #Set Path 5
+    clientServo.write_registers(0x6228, packetData, slave=1) #Set Path 5
     print("Path 5 Configured")
 
 #TODO need to make this uninteruptible
     packetData = [0x0001, 0x0000, 0x0000, 0x01f4, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Absolute position
-    clientServo.write_registers(0x6218, packetData, slave=1) #Set Path 5
+    clientServo.write_registers(0x6230, packetData, slave=1) #Set Path 5
     print("Path 6 Configured")

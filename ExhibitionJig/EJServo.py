@@ -36,6 +36,8 @@ def CheckServoStatus():
     if((status.registers[0]&0x08)):
         currPressMode = pressMode.referenced
         print('referenced')
+    else:
+        currPressMode = pressMode.notReferenced
     
     
 
@@ -46,6 +48,7 @@ def MoveUp():
         EJServoComms.HomingUp()
     elif(currPressMode == pressMode.referenced):
         EJServoComms.NormalUp()
+        #EJServoComms.NormalVelocityUp()
 
 def MoveDown():
     global currPressMode
@@ -54,6 +57,7 @@ def MoveDown():
         EJServoComms.HomingDown()
     elif(currPressMode == pressMode.referenced):
         EJServoComms.NormalDown()
+        #EJServoComms.NormalVelocityDown()
 
 #Homing > Software does a double step homing process for accuracy
 #If a limit switch is hit while homing the direction changes
