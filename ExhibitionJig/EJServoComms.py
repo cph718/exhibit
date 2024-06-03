@@ -93,8 +93,11 @@ def NormalVelocityDown():
     clientServo.write_registers(0x6200, packetData, slave=1)
     print("Normal Velocity Down")
 
-def NormalUp(): #Call path2
-    clientServo.write_register(0x6002, 0x0012, slave=1) #Run Path2
+def NormalUp(): 
+    #Call Path 6
+    clientServo.write_register(0x6002, 0x0016, slave=1)
+    #Call path2
+    #clientServo.write_register(0x6002, 0x0012, slave=1) #Run Path2
     print("Normal Up")
 
 def NormalDown(): #Call path3
@@ -121,23 +124,23 @@ def NormalDown(): #Call path3
 #6217 = Special Parameters  
 
 def SetPaths():
-    packetData = [0x0002, 0x0000, 0x0000, 0xff38, 0x0062, 0x0062, 0x0000, 0x0000] #velocity mode
+    packetData = [0x0002, 0x0000, 0x0000, 0xff38, 0x0064, 0x0064, 0x0000, 0x0000] #velocity mode
     clientServo.write_registers(0x6210, packetData, slave=1) #Set Path 2
     print("Path 2 Configured")
 
-    packetData = [0x8421, 0xffff, 0xe0c0, 0xffc8, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Overlap, Absolute position, Jump to 4, Jump (-8000)
+    packetData = [0x4421, 0xffff, 0x3cb0, 0xfe0c, 0x0064, 0x0064, 0x0000, 0x0000] #Position Mode, Overlap, Absolute position, Jump to 4, Jump (-50000)
     clientServo.write_registers(0x6218, packetData, slave=1) #Set Path 3
     print("Path 3 Configured")
 
-    packetData = [0x8501, 0xffff, 0xdcd8, 0x0032, 0x0062, 0x0062, 0x01f4, 0x0000] #Position Mode, Absolute position, Jump to 5, Pause 0.5s, Jump (-9000)
+    packetData = [0x4501, 0xffff, 0x15a0, 0xffce, 0x0064, 0x0064, 0x01f4, 0x0000] #Position Mode, Absolute position, Jump to 5, Pause 0.5s, Jump (-60000)
     clientServo.write_registers(0x6220, packetData, slave=1) #Set Path 4
     print("Path 4 Configured")
 
-    packetData = [0x8621, 0xffff, 0xe0c0, 0x0032, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Overlap, Absolute position, Jump to 6, Jump (-8000)
+    packetData = [0x4621, 0xffff, 0x3cb0, 0x0032, 0x0064, 0x0064, 0x0000, 0x0000] #Position Mode, Overlap, Absolute position, Jump to 6, Jump (-50000)
     clientServo.write_registers(0x6228, packetData, slave=1) #Set Path 5
     print("Path 5 Configured")
 
 #TODO need to make this uninteruptible
-    packetData = [0x0001, 0x0000, 0x0000, 0x01f4, 0x0062, 0x0062, 0x0000, 0x0000] #Position Mode, Absolute position
+    packetData = [0x0001, 0x0000, 0x0000, 0x01f4, 0x0064, 0x0064, 0x0000, 0x0000] #Position Mode, Absolute position
     clientServo.write_registers(0x6230, packetData, slave=1) #Set Path 5
     print("Path 6 Configured")

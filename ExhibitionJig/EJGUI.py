@@ -19,14 +19,10 @@ def ResetWarning():
     EJServo.StopServo()
 
 def MoveUp(event):
-    #if Homing
     EJServo.MoveUp()
-    #else move up to top limit switch
 
 def MoveDown(event):
-    #if Homing
     EJServo.MoveDown()
-    #else move up to top limit switch
 
 def Exit():
     EJServo.DeinitServo()
